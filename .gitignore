@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Testing
+.pytest_cache/
+.coverage
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Environment variables
+.env
+.streamlit/secrets.toml
+
+# ML model/cache files
+*.pt
+*.pth
+*.bin
+*.safetensors
