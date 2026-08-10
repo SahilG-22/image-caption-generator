@@ -272,3 +272,21 @@ Next steps:
 6. Test BLIP independently
 7. Finalize module interfaces
 8. Begin implementation
+
+Image captioning model:
+Salesforce/blip-image-captioning-base
+
+Framework:
+Hugging Face Transformers
+
+Backend:
+PyTorch
+
+Device:
+Automatically select MPS/CUDA/CPU
+
+Input:
+PIL Image
+
+Output:
+Natural-language caption
