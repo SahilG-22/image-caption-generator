@@ -1,6 +1,9 @@
 import streamlit as st
 from PIL import Image
 
+from src.captioning.model import generate_caption
+from src.utils.text_to_speech import speak_text
+
 
 st.set_page_config(
     page_title="AI Image Caption Generator",
@@ -22,9 +25,14 @@ uploaded_image = st.file_uploader(
 )
 
 
+# Store the generated caption so it remains available
+# when Streamlit reruns the application.
+if "caption" not in st.session_state:
+    st.session_state.caption = None
+
+
 if uploaded_image is not None:
 
-    # Display the uploaded image
     image = Image.open(uploaded_image)
 
     st.image(
@@ -33,28 +41,31 @@ if uploaded_image is not None:
         use_container_width=True,
     )
 
-    # Generate caption button
     if st.button("Generate Caption"):
 
         with st.spinner("Generating caption..."):
 
             try:
-                # Import only when caption generation is requested.
-                from src.captioning.model import generate_caption
-
-                caption = generate_caption(image)
-
-                st.subheader("Generated Caption")
-                st.write(caption)
+                st.session_state.caption = generate_caption(image)
 
             except Exception as error:
-                st.error(
-                    "Unable to generate the caption."
-                )
+                st.session_state.caption = None
+                st.error("Unable to generate the caption.")
                 st.exception(error)
 
-    # Text-to-speech will be connected later.
-    if st.button("🔊 Listen to Caption"):
-        st.info(
-            "Text-to-speech will be connected in a later step."
-        )
+    # Display the caption if one has been generated.
+    if st.session_state.caption:
+
+        st.subheader("Generated Caption")
+        st.write(st.session_state.caption)
+
+        if st.button("🔊 Listen to Caption"):
+
+            with st.spinner("Speaking caption..."):
+                try:
+                    speak_text(st.session_state.caption)
+                    st.success("Caption spoken successfully.")
+
+                except Exception as error:
+                    st.error("Unable to speak the caption.")
+                    st.exception(error)
