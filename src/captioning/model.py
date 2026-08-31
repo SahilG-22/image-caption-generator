@@ -1,4 +1,5 @@
 import torch
+from PIL import Image
 from transformers import AutoProcessor, AutoModelForMultimodalLM
 
 
@@ -47,6 +48,9 @@ def generate_caption(image):
     Returns:
         str: Generated image caption
     """
+
+    if not isinstance(image, Image.Image):
+        raise TypeError("image must be a PIL Image")
 
     # Make sure the image is RGB
     image = image.convert("RGB")
