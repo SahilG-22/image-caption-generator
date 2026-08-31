@@ -32,8 +32,9 @@ DEVICE = get_device()
 processor = AutoProcessor.from_pretrained(MODEL_NAME)
 
 model = AutoModelForMultimodalLM.from_pretrained(MODEL_NAME)
-
 model = model.to(DEVICE)
+
+model.eval()
 
 
 def generate_caption(image):
@@ -63,7 +64,7 @@ def generate_caption(image):
     }
 
     # Generate caption
-    with torch.no_grad():
+    with torch.inference_mode():
         output = model.generate(
             **inputs,
             max_new_tokens=30
