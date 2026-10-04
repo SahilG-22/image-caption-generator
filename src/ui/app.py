@@ -16,7 +16,7 @@ if str(PROJECT_ROOT) not in sys.path:
 # ============================================================
 
 import streamlit as st
-from PIL import Image
+from src.processing.image_processor import load_image
 
 from src.captioning.model import generate_caption
 from src.utils.text_to_speech import speak_text
@@ -817,7 +817,7 @@ with left_column:
 
         try:
 
-            image = Image.open(uploaded_image)
+            image = load_image(uploaded_image)
 
             render_html(
                 """
