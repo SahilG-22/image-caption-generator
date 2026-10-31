@@ -966,9 +966,11 @@ with right_column:
 
                 try:
 
-                    speak_text(
+                    audio = speak_text(
                         st.session_state.caption
                     )
+                    if audio:
+                        st.audio(audio, format="audio/mp3")
 
                     st.success(
                         "Caption spoken successfully."
